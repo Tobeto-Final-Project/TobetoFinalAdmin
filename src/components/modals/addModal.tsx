@@ -3,17 +3,17 @@ import { Button, Modal } from 'react-bootstrap'
 import FormikInput from '../FormikInput'
 import { Formik,Form } from 'formik'
 import { AnyObject, object, string } from 'yup'
-import { CreateRequestModel } from '../../models/responses/Abstracts/ResponseAbstracts'
-import { xService } from '../../services/xService'
-import { CreateInputTypes } from '../../utils/formikInputTypes/abstracts/abstracts'
+import { CreateRequestModel } from '../../models/abstracts/ResponseAbstracts'
+import { CreateInitialValues, CreateInputTypes } from '../../utils/requirements/form/formRequirementsAbstract'
+
 
 
 type Props={
     onHide:any
     show:any
     modalHeader:string;
-    initialValues?:CreateRequestModel;
-    validationObject?:AnyObject;
+    initialValues:CreateInitialValues;
+    validationObject:AnyObject;
     createFunc:(data:CreateRequestModel)=>void;
     formikInputTypes?:CreateInputTypes[];
 }
@@ -22,8 +22,7 @@ const AddModal = (props:Props) => {
     const initialValues:CreateRequestModel = props.initialValues;
     const validationSchema = props.validationObject;
 
-    console.log(props.initialValues);
-    console.log(props.validationObject);
+    
  
     
   return (
@@ -36,12 +35,14 @@ const AddModal = (props:Props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {props.modalHeader}
+          {props.modalHeader} Ekle
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Formik initialValues={initialValues}
           onSubmit={(initialValues:CreateRequestModel) => {
+            console.log(initialValues);
+            
             props.createFunc(initialValues)
           }}
           validationSchema={validationSchema}
@@ -51,6 +52,9 @@ const AddModal = (props:Props) => {
                     <FormikInput
                     name={type.name}
                     label={type.label}
+                    placeHolder={type?.placeHolder}
+                    value={type?.value}
+                    type ={type?.type}
                   />
                 ))}
             <button className="btn btn-success" type="submit" >

@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { GetAllModel } from "../models/responses/Abstracts/ResponseAbstracts";
+
 import ManufacturerService from "./dashboard/manufacturers/ManufacturerService";
+import { SingleResponseModel,GetAllModel,CreatedResponseModel,CreateRequestModel,UpdateRequestModel,UpdatedResponseModel } from "../models/abstracts/ResponseAbstracts";
 
 
 export type GUID = string & { isGuid: true };
@@ -9,9 +10,9 @@ function guid(guid: string): GUID {
 }
 
 export class BaseService<
-  GetListModelResponse,SingleModelResponse,
-  CreateModelResponse,CreateModelRequest,
-  UpdateModelRequest,UpdateModelResponse
+  GetAll,SingleResponseModel,
+  CreatedResponseModel,CreateRequestModel,
+  UpdateRequestModel,UpdatedResponseModel
 > {
   api_url: string = "";
   api_type: string = "";
@@ -22,8 +23,8 @@ export class BaseService<
     this.api_type = apiType;
 
   }
-  async getAll(pageIndex: string, pageSize: string): Promise<AxiosResponse<GetListModelResponse, any>> {
-    return axios.get<GetListModelResponse>(
+  async getAll(pageIndex: string, pageSize: string): Promise<AxiosResponse<GetAllModel<SingleResponseModel>, any>> {
+    return axios.get<GetAllModel<SingleResponseModel>>(
       this.api_url +
       this.api_type +
       "?PageIndex=" +
@@ -37,8 +38,8 @@ export class BaseService<
       });
   }
 
-  async getById(id: GUID): Promise<AxiosResponse<SingleModelResponse, any>> {
-    return axios.get<SingleModelResponse>(
+  async getById(id: GUID): Promise<AxiosResponse<SingleResponseModel, any>> {
+    return axios.get<SingleResponseModel>(
       this.api_url + this.api_type + "/" + id, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -46,7 +47,7 @@ export class BaseService<
     }
     );
   }
-  async create(data: CreateModelRequest): Promise<AxiosResponse<CreateModelResponse, any>> {
+  async create(data: CreateRequestModel): Promise<AxiosResponse<CreatedResponseModel, any>> {
     return axios.post(this.api_url + this.api_type, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -61,7 +62,7 @@ export class BaseService<
       }
     });
   }
-  async update(data: UpdateModelRequest): Promise<AxiosResponse<UpdateModelResponse, any>> {
+  async update(data: UpdateRequestModel): Promise<AxiosResponse<UpdatedResponseModel, any>> {
     return axios.put(this.api_url + this.api_type, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

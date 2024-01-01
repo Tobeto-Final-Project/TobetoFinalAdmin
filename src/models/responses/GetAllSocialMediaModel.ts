@@ -1,5 +1,4 @@
 
-import { GetAllModel } from "./Abstracts/ResponseAbstracts";
 import { ResponseModel } from "./ResponseModel";
 import { SocialMediaModel } from "./SocialMediaModel";
 

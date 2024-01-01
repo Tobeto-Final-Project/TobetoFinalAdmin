@@ -1,5 +1,5 @@
 import { GUID } from "../../../../services/BaseService";
-import { CreatedResponseModel } from "../../Abstracts/ResponseAbstracts";
+import { CreatedResponseModel } from "../../../abstracts/ResponseAbstracts";
 
 export interface CreatedManufacturerResponse extends CreatedResponseModel{
     id:GUID;

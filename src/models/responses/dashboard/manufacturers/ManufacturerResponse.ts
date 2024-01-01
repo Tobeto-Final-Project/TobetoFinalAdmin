@@ -1,5 +1,5 @@
 import { GUID } from "../../../../services/BaseService";
-import { SingleResponseModel } from "../../Abstracts/ResponseAbstracts";
+import { SingleResponseModel } from "../../../abstracts/ResponseAbstracts";
 
 export interface ManufacturerResponse extends SingleResponseModel{
     id:GUID;
