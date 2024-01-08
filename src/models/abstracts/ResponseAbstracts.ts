@@ -5,5 +5,5 @@ export  interface GetAllModel<SingleResponseModel>{ responseModel:ResponseModel;
 export  interface SingleResponseModel{}
 
 export  interface CreateRequestModel{}
-export  interface UpdateRequestModel{id:GUID|number|string;}
+export  interface UpdateRequestModel{id:GUID|number|string|any}
 export  interface UpdatedResponseModel{}

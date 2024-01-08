@@ -26,7 +26,6 @@ const Manufacturer = (props: Props) => {
             { name: 'id', label: 'Yapıcı Firma Id',value:'' },
 
             { name: 'name', label: 'Yapıcı Firma İsmi',value:'' },
-
     ]; 
     const createManufacturerValidationSchema = object({
             name: string().required("İsim Alanı Zorunludur*")

@@ -1,121 +1,134 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Dropdown, Modal, Table } from 'react-bootstrap'
-import { GetAllModel, SingleResponseModel, UpdateRequestModel, UpdatedResponseModel } from '../../models/abstracts/ResponseAbstracts'
-import UpdateModal from '../modals/updateModal';
-import { UpdateInitialValues, UpdateInputTypes, updateValidationSchema } from '../../utils/requirements/form/formRequirementsAbstract';
-import { Form, Formik } from 'formik';
-import FormikInput from '../FormikInput';
-import { json } from 'stream/consumers';
-
+import React, { useEffect, useState } from "react";
+import { Button, Dropdown, Modal, Table } from "react-bootstrap";
+import {
+    GetAllModel,
+    SingleResponseModel,
+    UpdateRequestModel,
+    UpdatedResponseModel,
+} from "../../models/abstracts/ResponseAbstracts";
+import {
+    UpdateInitialValues,
+    UpdateInputTypes,
+    updateValidationSchema,
+} from "../../utils/requirements/form/formRequirementsAbstract";
+import UpdateModal from "../modals/updateModal";
+import { GUID } from "../../services/BaseService";
+import DeleteModal from "../modals/deleteModal";
+import ShowModal from "../modals/showModal";
+import { FaApper, FaEdit, FaNewspaper, FaPage4, FaPaperclip, FaShower, FaTrash } from "react-icons/fa";
 
 type Props = {
-    response:GetAllModel<SingleResponseModel>;
-    updateInputTypes:UpdateInputTypes[];
-    updateInitialValues:UpdateInitialValues;
-    updateValidationSchema:updateValidationSchema;
-    updateFunc:(data:UpdateRequestModel)=>void;
-    updateModalHeader:string
-}
+    response: GetAllModel<SingleResponseModel>;
+    updateInputTypes: UpdateInputTypes[];
+    updateInitialValues: UpdateInitialValues;
+    updateValidationSchema: updateValidationSchema;
+    updateFunc: (data: UpdateRequestModel) => void;
+    updateModalHeader: string;
+    deleteFunc: (id: GUID | number | string) => void;
+};
 
-const MainTable = (props:Props) => {
+const MainTable = (props: Props) => {
     const [modalShow, setModalShow] = React.useState(false);
-    const [attributes,setAttributes]=useState<string[]>();
-    const initialValues:UpdateRequestModel = props.updateInitialValues;
-    const validationSchema = props.updateValidationSchema;
+    const [showModalShow, setShowModalShow] = React.useState(false);
+    const [attributes, setAttributes] = useState<string[]>();
+    const [inputTypes, setInputTypes] = useState<string[] | undefined>();
+    const [deleteModalShow, setDeleteModalShow] = useState(false);
+    const [deleteItem, setDeleteItem] = useState();
+    const [updateItem, setUpdateItem] = useState();
+    const [showItem, setShowItem] = useState<SingleResponseModel>();
 
-     useEffect(() => {
-       const attribute =Object.keys(props.response.items[0]);
-       setAttributes(attribute);
-    
-       
-      }, [])
-  
-       
-       
-    
-    
-  return (
-    <>
-     <Table  {...props}>
-      <thead>
-        <tr>
-          <th>#</th>
-            {attributes?.map((attribute) => (
-            <th >{attribute}</th>
-          ))}   
-          <th> Operasyonlar</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.response.items.map((item:any,index)=>(
-            <tr>
-            <td>{index+1}</td>
-            {attributes?.map((attribute) => (
-                    <td >{item[attribute]}</td>
-                   
-          ))}  
-              
-            <td className='d-flex justify-content-center'>
-            <Dropdown >
-              <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                
-              </Dropdown.Toggle>
-              
-             
-              <Dropdown.Menu>
-                <Dropdown.Item  onClick={() => setModalShow(true)}>Güncelle</Dropdown.Item>
-                     <Modal
-                      show={modalShow}
-                      
-                      size="lg"
-                      aria-labelledby="contained-modal-title-vcenter"
-                      centered
-                    >
-                      <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title-vcenter">
-                          {props.updateModalHeader} Güncelle
-                        </Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <Formik initialValues={initialValues}
-                          onSubmit={(initialValues: UpdateRequestModel) => {
-                            props.updateFunc(initialValues)
-                          }}
-                          validationSchema={validationSchema}
-                        >
-                          <Form>
+    const handleUpdate = (item) => {
+        setUpdateItem(item);
+        setModalShow(true);
+    };
+
+    const handleDelete = (id) => {
+        setDeleteItem(id);
+        setDeleteModalShow(true);
+    };
+    const handleShow = (item) => {
+        setShowItem(item);
+        setShowModalShow(true);
+    };
+
+    useEffect(() => {
+        const attribute = Object.keys(props.response.items[0]);
+        setAttributes(attribute);
+        console.clear();
+
+        props.updateInputTypes.map((header: UpdateInputTypes) => {
+            setInputTypes((prevInputTypes) =>
+                prevInputTypes ? [...prevInputTypes, header.label] : [header.label]
+            );
+        });
+    }, []);
+
+    return (
+        <>
+            <table className="table table-striped table-hover" {...props}>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        {inputTypes?.map((header) => (
+                            <th>{header}</th>
+                        ))}
+                        <th> Operasyonlar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.response.items
+                        .map((item: any, index) => (
+                            <tr>
+                                <td>{index + 1}</td>
+                                {attributes?.map((attribute) => (
+                                    <td>{item[attribute]}</td>
+                                ))}
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;<a onClick={() => handleUpdate(item)} className="edit" data-toggle="modal"> <FaEdit /></a> &nbsp;
+                                    <a  onClick={() => handleDelete(item.id)} className="delete" data-toggle="modal"><FaTrash /></a>&nbsp;
+                                    <a onClick={() => handleShow(item)} className="delete" data-toggle="modal"><FaNewspaper/></a>
+                                </td>
+                              
+
+
+                                            <UpdateModal
+                                                show={modalShow}
+                                                onHide={() => setModalShow(false)}
+                                                modalHeader={props.updateModalHeader}
+                                                initialValues={updateItem}
+                                                validationObject={props.updateValidationSchema}
+                                                updateFunc={props.updateFunc}
+                                                formikInputTypes={props.updateInputTypes}
+                                            />
+                                           
+                                            <DeleteModal
+                                                onHide={() => setDeleteModalShow(false)}
+                                                show={deleteModalShow}
+                                                modalHeader={props.updateModalHeader}
+                                                deleteFunc={props.deleteFunc}
+                                                item={deleteItem}
+                                            />
+                                           
+                                            <ShowModal
+                                                onHide={() => setShowModalShow(false)}
+                                                show={showModalShow}
+                                                modalHeader={props.updateModalHeader}
+                                                item={showItem}
+                                                attributes={attributes}
+                                            />
+                                 
                             
-                            {props.updateInputTypes.map((type) => (
-                              <FormikInput
-                                name={type.name}
-                                label={type.label}
-                                value={Object.values(item[0]).toString()}//not end
-                              />
-                            ))}
-                            <button className="btn btn-success" type="submit" >
+                            </tr>
+                        ))
+                        .reverse()}
 
-                              {"Güncelle"}
 
-                            </button>
-                          </Form>
-                        </Formik>
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button onClick={()=>setModalShow(false)}  >Close</Button>
-                      </Modal.Footer>
-                    </Modal>
-                <Dropdown.Item href="#/action-2">Sil</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Görüntüle</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown></td>
-          </tr>
-        ))}
-        
-       
-      </tbody>
-    </Table>
-    </>
-  )
-}
 
-export default MainTable
+                </tbody>
+            </table>
+
+        </>
+    );
+};
+
+export default MainTable;

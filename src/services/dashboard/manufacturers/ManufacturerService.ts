@@ -18,5 +18,4 @@ class ManufacturerService
   }
 	
 }
-
 export default ManufacturerService;

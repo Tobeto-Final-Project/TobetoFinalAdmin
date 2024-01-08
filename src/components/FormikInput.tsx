@@ -8,7 +8,7 @@ type Props = {
 	name: string;
 	type?: string;
 	placeHolder?: string;
-	value?:string;
+	value?: string;
 };
 
 const FormikInput = (props: Props) => {
@@ -22,12 +22,12 @@ const FormikInput = (props: Props) => {
 				type={props.type || "text"}
 				className="login-input"
 				placeholder={props.placeHolder}
-				value={props.value}
 			/>
+			
 			<ErrorMessage name={props.name}>
 				{message => <Row>
 					<Col xs={12}>
-						<Toast   onClose={() => setShow(false)} show={true} delay={3000} autohide>
+						<Toast onClose={() => setShow(false)} show={true} delay={3000} autohide>
 							<Toast.Body >{message}</Toast.Body>
 						</Toast>
 					</Col>

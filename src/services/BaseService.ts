@@ -12,7 +12,7 @@ function guid(guid: string): GUID {
 export class BaseService<
   GetAll,SingleResponseModel,
   CreatedResponseModel,CreateRequestModel,
-  UpdateRequestModel,UpdatedResponseModel
+  UpdatedResponseModel,UpdateRequestModel
 > {
   api_url: string = "";
   api_type: string = "";
@@ -23,7 +23,7 @@ export class BaseService<
     this.api_type = apiType;
 
   }
-  async getAll(pageIndex: string, pageSize: string): Promise<AxiosResponse<GetAllModel<SingleResponseModel>, any>> {
+  async getAll(pageIndex: string, pageSize: string) {
     return axios.get<GetAllModel<SingleResponseModel>>(
       this.api_url +
       this.api_type +
@@ -55,7 +55,7 @@ export class BaseService<
     })
     ;
   }
-  async delete(id: GUID) {
+  async delete(id: GUID|number|string) {
     return axios.delete(this.api_url + this.api_type + "/" + id, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

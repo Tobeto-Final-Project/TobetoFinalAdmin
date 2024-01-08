@@ -21,7 +21,8 @@ type Props={
 const AddModal = (props:Props) => {
     const initialValues:CreateRequestModel = props.initialValues;
     const validationSchema = props.validationObject;
-
+  console.log(initialValues);
+  
     
  
     
