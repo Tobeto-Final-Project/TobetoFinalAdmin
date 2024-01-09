@@ -22,3 +22,12 @@ import { CreateRequestModel, UpdateRequestModel } from "../../../abstracts/Respo
     subTypeId:GUID |string;
     manufacturerId:GUID |string;
 }
+export interface CreateContentTagRequest extends CreateRequestModel{
+    contentId:GUID|string;
+    tagId:GUID|string
+}
+
+ export interface UpdateContentTagRequest extends UpdateRequestModel{
+    contentId:GUID|string;
+    tagId:GUID|string
+}
