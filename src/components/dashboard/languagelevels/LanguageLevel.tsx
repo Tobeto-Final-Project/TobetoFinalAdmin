@@ -170,7 +170,7 @@ const LanguageLevel = (props: Props) => {
                                                                 <select className="form-control" required
                                                                     value={addSelectedLanguage}
                                                                     onChange={(e) => setUpdateSelectedLanguage(e.target.value)
-                                                                    }><option value={languageLevel.languageId} selected>{languageLevel.languageName}</option>
+                                                                    }><option defaultValue={languageLevel.languageId} selected>{languageLevel.languageName} + {languageLevel.languageId}</option>
                                                                     {languageControl &&
                                                                         languages.items.map((language: LanguageResponse) => (
 

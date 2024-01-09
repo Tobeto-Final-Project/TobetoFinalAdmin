@@ -19,6 +19,7 @@ import LanguageLevel from '../../components/dashboard/languagelevels/LanguageLev
 import District from '../../components/dashboard/districts/District';
 import ContentCategory from './ContentCategory';
 import Content from '../../components/dashboard/contents/Content';
+import Course from '../../components/dashboard/courses/Course';
 
 
 type Props = {}
@@ -48,11 +49,12 @@ const Dashboard = (props: Props) => {
                 {/* <Exam/> */}
                 {/* <City/> */}
                 {/* <Announcement/> */}
-                 {/* <District/>  */}
-                 {/* <LanguageLevel/> */}
+                {/* <District/>  */}
+                 {/* <LanguageLevel/>  */}
                 {/* <LanguageLevel/>  */}
                 {/* <ContentCategory/> */}
-                <Content/>
+                {/* <Content/>  */}
+                <Course/>
             </div>
         </div>
     </div>
