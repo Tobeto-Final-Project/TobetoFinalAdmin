@@ -3,6 +3,7 @@ import 'react-bootstrap-sidebar-menu/dist/index'
 import { Link } from 'react-router-dom';
 import './style.css'
 import { FaBuilding, FaChalkboardTeacher, FaDiscourse, FaFilePrescription, FaFileVideo, FaFillDrip, FaFontAwesome, FaHandshakeSlash, FaHashtag, FaLanguage, FaLayerGroup, FaMegaport, FaMountain, FaScroll, FaSpeakap, FaSquareFull, FaTag, FaTeamspeak, FaUber, FaUniversity, FaUserAlt, FaUserFriends, FaUsps, FaVideo } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
 type Props = {}
 const menuItems=[
@@ -20,95 +21,100 @@ const menuItems=[
  {
   name:'Sınıflar',
   key:'third',
-  to:'/duyurular',
+  to:'/sınıflar',
   icon:<FaUniversity/>
 },{
   name:'Genel Kategoriler',
   key:'fourth',
-  to:'/duyurular',
+  to:'/genelKategoriler',
   icon:<FaLayerGroup/>
 },{
-  name:'Ülkeler',
+  name:'Şehirler',
   key:'fifth',
-  to:'/duyurular',
+  to:'/sehirler',
   icon:<FaMountain/>
 },
 {
   name:'İlçeler',
   key:'e',
-  to:'/duyurular',
+  to:'/ilceler',
   icon:<FaMountain/>
 },
 {
-  name:'Videolar',
+  name:'İçerikler',
   key:'a',
-  to:'/duyurular',
+  to:'/icerikler',
   icon:<FaFileVideo/>
 },{
-  name:'Tagler',
+  name:'Etiketler',
   key:'b',
-  to:'/duyurular',
+  to:'/etiketler',
   icon:<FaTag/>
 },{
   name:'Kurslar',
   key:'c',
-  to:'/duyurular',
+  to:'/kurslar',
   icon:<FaDiscourse/>
 },
 {
-  name:'Modüller',
+  name:'Dersler',
   key:'d',
-  to:'/duyurular',
+  to:'/dersler',
   icon:<FaFilePrescription/>
 },{
   name:'Sınavlar',
   key:'f',
-  to:'/duyurular',
+  to:'/sinavlar',
   icon:<FaTeamspeak/>
 },{
   name:'Eğitimciler',
   key:'g',
-  to:'/duyurular',
+  to:'/egitimciler',
   icon:<FaChalkboardTeacher/>
 },{
   name:'Diller',
   key:'h',
-  to:'/duyurular',
+  to:'/diller',
   icon:<FaLanguage/>
 },{
   name:'Dil Seviyeleri',
   key:'ı',
-  to:'/duyurular',
+  to:'/dilSeviyeleri',
   icon:<FaSpeakap/>
 },{
   name:'Yapımcı Firmalar',
   key:'i',
-  to:'/firmalar',
+  to:'/yapimciFirmalar',
   icon:<FaBuilding/>
 },{
   name:'Yetenekler',
   key:'j',
-  to:'/duyurular',
+  to:'/yetenekler',
   icon:<FaFillDrip/>
 },{
   name:'Sosyal Medyalar',
   key:'k',
-  to:'/duyurular',
+  to:'/sosyalMedyalar',
   icon:<FaHashtag/>
 },{
   name:'Başvurular',
   key:'l',
-  to:'/duyurular',
+  to:'/basvurular',
   icon:<FaUber/>
 },{
-  name:'Video Kategorileri',
+  name:'İçerik Kategorileri',
   key:'m',
-  to:'/duyurular',
+  to:'/icerikKategorileri',
   icon:<FaUsps/>
 },{
   name:'Anketler',
   key:'n',
-  to:'/duyurular',
+  to:'/anketler',
+  icon:<FaSquareFull/>
+},{
+  name:'Alt Kategoriler',
+  key:'n',
+  to:'/altKategoriler',
   icon:<FaSquareFull/>
 },
 ]
@@ -116,23 +122,31 @@ const AdminSidebar = (props: Props) => {
 
     var menuHolder = document.getElementById('menuHolder')
     var siteBrand = document.getElementById('siteBrand')
-    function menuToggle(){
-      if(menuHolder.className == "drawMenu") menuHolder.className = ""
-      else menuHolder.className = "drawMenu"
+
+    const[toggle,setToggle] = useState('');
+
+    function menuToggle (){
+      if(toggle == "drawMenu") {setToggle("")   }
+      else {setToggle("drawMenu")}
     }
-    if(window.innerWidth < 426) siteBrand.innerHTML = "MAS"
-    window.onresize = function(){
-      if(window.innerWidth < 420) siteBrand.innerHTML = "MAS"
-      else siteBrand.innerHTML = "Tobeto Admin Panel"
-    }
+    useEffect(() => {
+      
+      if(window.innerWidth < 426) siteBrand.innerHTML = "MAS"
+      window.onresize = function(){
+        if(window.innerWidth < 420) siteBrand.innerHTML = "MAS"
+        else siteBrand.innerHTML = "Tobeto Admin Panel"
+      }
+      
+    }, [])
+    
 
   return (
   <>
-    <div id="menuHolder">
+    <div id="menuHolder" className={toggle}>
       <div role="navigation" className="sticky-top border-bottom border-top" id="mainNavigation">
         <div className="flexMain">
           <div className="flex2">
-            <button className="whiteLink siteLink" style={{borderRight:"1px solid #eaeaea"}} onClick={()=>menuToggle()}><i className="fas fa-bars me-2"></i> MENU</button>
+            <button className="whiteLink siteLink "  style={{borderRight:"1px solid #eaeaea"}} onClick={()=>menuToggle()}><i className="fas fa-bars me-2"></i> MENU</button>
           </div>
           <div className="flex3 text-center" id="siteBrand">
             Tobeto Admin Panel
@@ -152,7 +166,7 @@ const AdminSidebar = (props: Props) => {
         
         <div>
           {menuItems.map((item)=>(
-              <a href="#" className="nav-menu-item">{item.icon} {item.name}</a>
+              <Link to={item.to} className="nav-menu-item">{item.icon} {item.name}</Link>
 
           ))}
         </div>

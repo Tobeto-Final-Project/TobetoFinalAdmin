@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { GetListCategoryResponse } from '../../../models/responses/dashboard/categories/CategoryResponses';
+import { CategoryResponse, GetListCategoryResponse } from '../../../models/responses/dashboard/categories/CategoryResponses';
 import { GetListManufacturerResponse } from '../../../models/responses/dashboard/manufacturers/GetListManufacturerResponse';
 import CategoryService from '../../../services/dashboard/categories/CategoryService';
 import ManufacturerService from '../../../services/dashboard/manufacturers/ManufacturerService';
 import { GetListLectureResponse, LectureResponse } from '../../../models/responses/dashboard/lectures/LectureResponses';
 import LectureService from '../../../services/dashboard/lectures/LectureService';
 import CourseService from '../../../services/dashboard/courses/CourseService';
-import { GetListCourseResponse } from '../../../models/responses/dashboard/courses/CourseResponses';
+import { CourseResponse, GetListCourseResponse } from '../../../models/responses/dashboard/courses/CourseResponses';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { ManufacturerResponse } from '../../../models/responses/dashboard/manufacturers/ManufacturerResponse';
+import { CreateLectureCourseRequest, CreateLectureRequest } from '../../../models/requests/dashboard/lectures/LectureRequests';
+import { GUID } from '../../../services/BaseService';
+import LectureCourseService from '../../../services/dashboard/lectures/LectureCourseService';
     
     type Props = {}
     
     const Lecture = (props: Props) => {
         const [addLectureName, setAddLectureName] = useState('');
-        const [addDescription, setAddDescription] = useState('');
         const [addUrlName, setAddUrl] = useState('');
         const [addDuration, setAddDuration] = useState(0);
+        const [endTime, setAddEndTime] = useState(Date);
+        const [startTime, setAddStartTime] = useState(Date);
 
         const [lectures, setLecture] = useState<GetListLectureResponse>();
 
@@ -36,9 +41,38 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
         const [courseControl, setCourseControl] = useState<boolean>(false);
         const [addSelectedCourse, setAddCourse] = useState<any>();
-        const [course, setCourse] = useState<GetListCourseResponse>();
+        const [courses, setCourse] = useState<GetListCourseResponse>();
         let courseService: CourseService = new CourseService();
 
+        const [lectureCourseControl,setLectureCourseControl] =useState<boolean>(false);
+        const [addLectureCourse, setAddLectureCourse] = useState<any>();
+        let lectureCourseService: LectureCourseService = new LectureCourseService();
+
+        const handleFormLectureCourseAdd=(e,createLectureId:string|GUID)=>{
+            e.preventDefault();
+            let createLectureCourse :CreateLectureCourseRequest={
+                lectureId:createLectureId,
+                courseId:addSelectedCourse
+            }
+            lectureCourseService.create(createLectureCourse).then((res) => setReloadFlag((prev) => !prev));
+        }
+        const handleFormLectureAdd =(e)=>{
+            e.preventDefault();
+            let createdLecture:CreateLectureRequest={
+                name:addLectureName,
+                categoryId:addSelectedCategory,
+                imageUrl:addUrlName,
+                estimatedDuration:addDuration,
+                manufacturerId:addSelectedManufacturer,
+                startDate:new Date(startTime),
+                endDate:new Date(endTime)
+            }
+            service.create(createdLecture).then((res) => setReloadFlag((prev) => !prev)).then(()=>setAddCourse(''));
+        }
+        const handleFormLectureDelete = (e, id: GUID | string) => {
+            e.preventDefault();
+            service.delete(id).then(() => setReloadFlag((prev) => !prev))
+        }
         useEffect(() => {
             service.getAll("0", "100").then((response) => {
                 console.log(response.data);
@@ -58,9 +92,6 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                     }).then(() => setCourseControl(true));
                 }
                 );
-    
-    
-    
         }, [reloadFlag]);
 
 
@@ -121,24 +152,24 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                             </td>
                                            
                                         </tr>
-                                        {/* <div id={"addLectureCourseModal" + lecture.id }className="modal">
+                                         <div id={"addLectureCourseModal" + lecture.id }className="modal">
                                             <div className="modal-dialog">
-                                                <div className="modal-lecture">
+                                                <div className="modal-content">
                                                     <form onSubmit={(e)=>handleFormLectureCourseAdd(e,lecture.id)}>
                                                         <div className="modal-header">
-                                                            <h4 className="modal-title">İçeriğe Eğitimci Ekle</h4>
+                                                            <h4 className="modal-title">Derse Bir Kurs Ekle</h4>
                                                             <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                         </div>
                                                         <div className="modal-body">
                                                             <div className="form-group">
-                                                                <label>Eğitmenler</label>
+                                                                <label>Kurslar</label>
                                                                 <select className="form-control" required
                                                                     value={addSelectedCourse}
-                                                                    onChange={(e) => setAddLectureCourse(e.target.value)
-                                                                    }><option value="">Lütfen Bir Eğitmen Seçiniz </option>
-                                                                    {instructorControl &&
-                                                                        instructors.items.map((instructor:CourseResponse) => (
-                                                                            <option key={instructor.id} value={instructor.id}>{instructor.firstName + " " +  instructor.lastName}</option>
+                                                                    onChange={(e) => setAddCourse(e.target.value)
+                                                                    }><option value="">Lütfen Bir Kurs Seçiniz </option>
+                                                                    {courseControl &&
+                                                                        courses.items.map((course:CourseResponse) => (
+                                                                            <option key={course.id} value={course.id}>{course.name}</option>
                                                                         )
                                                                         )
                                                                     }
@@ -153,46 +184,14 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div> */}
-                                        {/* <div id={"addLectureTagModal" + lecture.id }className="modal">
+                                        </div> 
+                                       
+                                         <div id={'deleteLecture' + lecture.id} className="modal fade">
                                             <div className="modal-dialog">
-                                                <div className="modal-lecture">
-                                                    <form onSubmit={(e)=>handleFormLectureTagAdd(e,lecture.id)}>
+                                                <div className="modal-content">
+                                                    <form onSubmit={(e) => handleFormLectureDelete(e, lecture.id)}>
                                                         <div className="modal-header">
-                                                            <h4 className="modal-title">Etiket Ekle</h4>
-                                                            <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        </div>
-                                                        <div className="modal-body">
-                                                            <div className="form-group">
-                                                                <label>Etiketler</label>
-                                                                <select className="form-control" required
-                                                                    value={addSelectedTag}
-                                                                    onChange={(e) => setAddLectureTag(e.target.value)
-                                                                    }><option value="">Lütfen Bir Etiket Seçiniz </option>
-                                                                    {tagControl &&
-                                                                        tags.items.map((tag:TagResponse) => (
-                                                                            <option key={tag.id} value={tag.id}>{tag.name}</option>
-                                                                        )
-                                                                        )
-                                                                    }
-                                                                </select>
-                                                            </div>
-                                                         
-                                                        </div>
-                                                        <div className="modal-footer">
-                                                            <input type="button" className="btn btn-default" data-dismiss="modal" value="Cancel" />
-                                                            <input type="submit" className="btn btn-success" value="Add" />
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div> */}
-                                        {/* <div id={'deleteLecture' + lecture.id} className="modal fade">
-                                            <div className="modal-dialog">
-                                                <div className="modal-lecture">
-                                                    <form onSubmit={(e) => handleLectureDelete(e, lecture.id)}>
-                                                        <div className="modal-header">
-                                                            <h4 className="modal-title">Şehir Düzeyi Sil</h4>
+                                                            <h4 className="modal-title">Ders Sil</h4>
                                                             <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                         </div>
                                                         <div className="modal-body">
@@ -205,10 +204,10 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div> */}
-                                        {/* <div id={'showMoreLecture' + lecture.id} className="modal fade">
+                                        </div>
+                                        <div id={'showMoreLecture' + lecture.id} className="modal fade">
                                             <div className="modal-dialog">
-                                                <div className="modal-lecture">
+                                                <div className="modal-content">
 
                                                     <form >
                                                         <div className="modal-header">
@@ -217,12 +216,12 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                                         </div>
                                                         <div className="modal-body">
                                                             <div className="form-group">
-                                                                <label>İçerik  ID</label>
+                                                                <label>Ders  ID</label>
                                                                 {lecture.id}
                                                                 <input type="text" className="form-control" value={lecture.id} disabled />
                                                             </div>
                                                             <div className="form-group">
-                                                                <label>İçerik Adı  </label>
+                                                                <label>Ders Adı  </label>
                                                                 <input
                                                                     type="text"
                                                                     className="form-control"
@@ -233,89 +232,21 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                                                 />
                                                             </div>
                                                             <div className="form-group">
-                                                                <label>İçerik Dili  </label>
-                                                                <input
+                                                                <label>Ders Kursları</label>
+                                                                {
+                                                                   lecture.courses?.map((course:CourseResponse)=>(
+                                                                    <input
                                                                     type="text"
                                                                     className="form-control"
-                                                                    value={lecture.languageName}
+                                                                    value={course.name}
                                                                     disabled
 
                                                                 />
+                                                                   ))
+                                                                }
+                                                               
                                                             </div>
-                                                            <div className="form-group">
-                                                                <label>İçerik Açıklaması  </label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    value={lecture.description}
-                                                                    disabled
-
-                                                                />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label>İçerik Alt Kategorisi  </label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    value={lecture.subTypeName}
-                                                                    disabled
-                                                                    required
-
-                                                                />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label>İçerik Url  </label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    value={lecture.videoUrl}
-                                                                    disabled
-                                                                    required
-
-                                                                />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label>İçerik Süresi  </label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    value={lecture.duration}
-                                                                    disabled
-                                                                    required
-
-                                                                />
-                                                            </div> <div className="form-group">
-                                                                <label>İçerik Kategorisi  </label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    value={lecture.lectureCategoryName}
-                                                                    disabled
-                                                                    required
-
-                                                                />
-                                                            </div> <div className="form-group">
-                                                                <label>İçerik Yapımcısı  </label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    value={lecture.manufacturerName}
-                                                                    disabled
-                                                                    required
-                                                                />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label>İçerik Eğitimcileri  </label>
-                                                                {instructorControl && lecture.instructors?.map((instructor:CourseResponse)=>(
-                                                                        <h3>{instructor.firstName} {instructor.lastName}</h3>
-                                                                ))} 
-                                                            </div> 
-                                                            <div className="form-group">
-                                                                <label>İçerik Tagleri  </label>
-                                                                {tagControl && lecture.tags?.map((tag:TagResponse)=>(
-                                                                        <h3>{tag.name}</h3>
-                                                                ))} 
-                                                            </div> 
+                                                            
                                                         </div>
                                                         <div className="modal-footer">
                                                             <input type="button" className="btn btn-default" data-dismiss="modal" value="Cancel" />
@@ -323,7 +254,7 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div> */}
+                                        </div> 
 
 
                                     </>
@@ -341,7 +272,7 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
             <div id="addLectureModal" className="modal">
                 <div className="modal-dialog">
-                    <div className="modal-lecture">
+                    <div className="modal-content">
                         <form onSubmit={handleFormLectureAdd}>
                             <div className="modal-header">
                                 <h4 className="modal-title">Ders Ekle</h4>
@@ -353,14 +284,14 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                     <input type="text" className="form-control" required onChange={(e) => setAddLectureName(e.target.value)} />
                                 </div>
                                 <div className="form-group">
-                                    <label>Kurslar</label>
+                                    <label>Kategoriler</label>
                                     <select className="form-control" required
-                                        value={addSelectedLanguage}
-                                        onChange={(e) => setAddLanguage(e.target.value)
+                                        value={addSelectedCategory}
+                                        onChange={(e) => setAddCategory(e.target.value)
                                         }><option value="">Lütfen Bir Kurs Seçiniz </option>
-                                        {languageControl &&
-                                            languages.items.map((language: LanguageResponse) => (
-                                                <option key={language.id} value={language.id}>{language.name}</option>
+                                        {categoryControl &&
+                                            categories.items.map((category: CategoryResponse) => (
+                                                <option key={category.id} value={category.id}>{category.name}</option>
                                             )
                                             )
                                         }
@@ -368,13 +299,13 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                 </div>
                                 <div className="form-group">
                                     <label>İmage Url</label>
-                                    <input type="text" className="form-control" required onChange={(e) => setAddDescription(e.target.value)} />
+                                    <input type="text" className="form-control" required onChange={(e) => setAddUrl(e.target.value)} />
                                 </div>
                                 <div className="form-group">
                                     <label>Yapımcı Firmalar</label>
                                     <select className="form-control" required
                                         value={addSelectedManufacturer}
-                                        onChange={(e) => setAddLectureManufacturer(e.target.value)
+                                        onChange={(e) => setAddManufacturer(e.target.value)
                                         }><option value="">Lütfen Bir Yapıcı Firma Seçiniz </option>
                                         {manufacturerControl &&
                                             manufacturers.items.map((manufacturer: ManufacturerResponse) => (
@@ -387,15 +318,15 @@ import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
                                
                                 <div className="form-group">
                                     <label>Başlangıç Zamanı</label>
-                                    <input type="datetime-local" className="form-control" required onChange={(e) => setAddUrl(e.target.value)} />
+                                    <input type="datetime-local" className="form-control" required onChange={(e) => setAddStartTime(e.target.value)} />
                                 </div>
                                 <div className="form-group">
                                     <label>Bitiş Zamanı</label>
-                                    <input type="datetime-local" className="form-control" required onChange={(e) => setAddUrl(e.target.value)} />
+                                    <input type="datetime-local" className="form-control" required onChange={(e) => setAddEndTime(e.target.value)} />
                                 </div>
                                 <div className="form-group">
                                     <label>Tahmini Bitiş Süresi</label>
-                                    <input type="number" className="form-control" required onChange={(e) => setAddUrl(e.target.value)} />
+                                    <input type="number" className="form-control" required onChange={(e) => setAddDuration(parseInt(e.target.value))} />
                                 </div>
                             </div>
                             <div className="modal-footer">

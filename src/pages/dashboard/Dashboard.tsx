@@ -22,6 +22,7 @@ import Content from '../../components/dashboard/contents/Content';
 import Course from '../../components/dashboard/courses/Course';
 import Category from './Category';
 import Lecture from '../../components/dashboard/lectures/Lecture';
+import { Route, Routes } from 'react-router-dom';
 
 
 type Props = {}
@@ -33,35 +34,7 @@ const Dashboard = (props: Props) => {
    console.log(token);
    
   return (
-    <div className="container align-items-center">
-        <div className="row ">
-            <div className="col-12">
-                <AdminSidebar/>
-            </div>
-            <div className="col-12">
-                {/* <Manufacturer /> */}
-                {/* <Tag/> */}
-                {/* <SubType/> */}
-                {/* <Survey/> */}
-                {/* <Stage/> */}
-                 {/* <SocialMedia/>  */}
-                {/* <Skill/> */}
-                {/* <Language/> */}
-                {/* <Instructor/> */}
-                {/* <Exam/> */}
-                {/* <City/> */}
-                {/* <Announcement/> */}
-                {/* <District/>  */}
-                 {/* <LanguageLevel/>  */}
-                {/* <LanguageLevel/>  */}
-                {/* <ContentCategory/> */}
-                {/* <Content/>  
-                <Category/> */}
-               {/* <Course/> */}
-               <Lecture/>
-            </div>
-        </div>
-    </div>
+    <></>
     
   )
 }
