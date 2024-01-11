@@ -24,6 +24,8 @@ import SubType from './pages/dashboard/SubType';
 import Survey from './pages/dashboard/Surveys';
 import Tag from './pages/dashboard/Tag';
 import AdminSidebar from './components/Sidebar.tsx/AdminSidebar';
+import Student from './pages/dashboard/Student';
+import StudentClass from './components/dashboard/studentClasses/StudentClass';
 
 
 function App(): ReactElement {
@@ -335,7 +337,36 @@ function App(): ReactElement {
             </div>
           }
         />
-        
+        <Route
+          path="/ogrenciler"
+          element={
+            <div className="container align-items-center">
+              <div className="row">
+                <div className="col-12">
+                  <AdminSidebar />
+                </div>
+                <div className="col-12">
+                  <Student />
+                </div>
+              </div>
+            </div>
+          }
+        />
+        <Route
+          path="/siniflar"
+          element={
+            <div className="container align-items-center">
+              <div className="row">
+                <div className="col-12">
+                  <AdminSidebar />
+                </div>
+                <div className="col-12">
+                  <StudentClass />
+                </div>
+              </div>
+            </div>
+          }
+        />
 
 
       </Routes>

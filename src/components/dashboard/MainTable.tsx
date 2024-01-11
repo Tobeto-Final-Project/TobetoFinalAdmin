@@ -115,6 +115,7 @@ const MainTable = (props: Props) => {
                                                 modalHeader={props.updateModalHeader}
                                                 item={showItem}
                                                 attributes={attributes}
+                                                
                                             />
                                  
                             

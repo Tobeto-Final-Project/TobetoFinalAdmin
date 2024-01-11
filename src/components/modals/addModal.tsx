@@ -21,7 +21,7 @@ type Props={
 const AddModal = (props:Props) => {
     const initialValues:CreateRequestModel = props.initialValues;
     const validationSchema = props.validationObject;
-  console.log(initialValues);
+    console.log(initialValues);
   
     
  
@@ -40,9 +40,9 @@ const AddModal = (props:Props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Formik initialValues={initialValues}
+        <Formik 
+        initialValues={initialValues}
           onSubmit={(initialValues:CreateRequestModel) => {
-            console.log(initialValues);
             
             props.createFunc(initialValues)
           }}

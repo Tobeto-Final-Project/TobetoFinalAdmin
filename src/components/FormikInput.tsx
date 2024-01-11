@@ -22,6 +22,7 @@ const FormikInput = (props: Props) => {
 				type={props.type || "text"}
 				className="login-input"
 				placeholder={props.placeHolder}
+			
 			/>
 			
 			<ErrorMessage name={props.name}>

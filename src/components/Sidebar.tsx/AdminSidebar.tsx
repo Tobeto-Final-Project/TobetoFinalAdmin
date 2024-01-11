@@ -21,7 +21,7 @@ const menuItems=[
  {
   name:'Sınıflar',
   key:'third',
-  to:'/sınıflar',
+  to:'/siniflar',
   icon:<FaUniversity/>
 },{
   name:'Genel Kategoriler',
@@ -120,24 +120,13 @@ const menuItems=[
 ]
 const AdminSidebar = (props: Props) => {
 
-    var menuHolder = document.getElementById('menuHolder')
-    var siteBrand = document.getElementById('siteBrand')
-
     const[toggle,setToggle] = useState('');
 
     function menuToggle (){
       if(toggle == "drawMenu") {setToggle("")   }
       else {setToggle("drawMenu")}
     }
-    useEffect(() => {
-      
-      if(window.innerWidth < 426) siteBrand.innerHTML = "MAS"
-      window.onresize = function(){
-        if(window.innerWidth < 420) siteBrand.innerHTML = "MAS"
-        else siteBrand.innerHTML = "Tobeto Admin Panel"
-      }
-      
-    }, [])
+
     
 
   return (
