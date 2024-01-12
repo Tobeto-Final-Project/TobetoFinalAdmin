@@ -47,7 +47,7 @@ const MainTable = (props: Props) => {
         setDeleteModalShow(true);
     };
     const handleShow = (item) => {
-        setShowItem(item);
+        setUpdateItem(item);
         setShowModalShow(true);
     };
 
@@ -86,7 +86,7 @@ const MainTable = (props: Props) => {
                                 <td>
                                     &nbsp;&nbsp;&nbsp;<a onClick={() => handleUpdate(item)} className="edit" data-toggle="modal"> <FaEdit /></a> &nbsp;
                                     <a  onClick={() => handleDelete(item.id)} className="delete" data-toggle="modal"><FaTrash /></a>&nbsp;
-                                    <a onClick={() => handleShow(item)} className="delete" data-toggle="modal"><FaNewspaper/></a>
+                                    <a onClick={() => handleShow(item)} className="show" data-toggle="modal"><FaNewspaper/></a>
                                 </td>
                               
 
@@ -109,15 +109,23 @@ const MainTable = (props: Props) => {
                                                 item={deleteItem}
                                             />
                                            
-                                            <ShowModal
+                                            {/* <ShowModal
                                                 onHide={() => setShowModalShow(false)}
                                                 show={showModalShow}
                                                 modalHeader={props.updateModalHeader}
                                                 item={showItem}
                                                 attributes={attributes}
                                                 
+                                            /> */}
+                                             <ShowModal
+                                                show={showModalShow}
+                                                onHide={() => setShowModalShow(false)}
+                                                modalHeader={props.updateModalHeader}
+                                                initialValues={updateItem}
+                                                validationObject={props.updateValidationSchema}
+                                                updateFunc={props.updateFunc}
+                                                formikInputTypes={props.updateInputTypes}
                                             />
-                                 
                             
                             </tr>
                         ))

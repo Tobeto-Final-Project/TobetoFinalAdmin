@@ -27,7 +27,7 @@ const Exam = (props: Props) => {
     const updateExamInputTypes: UpdateInputTypes[] = [
         { name: 'id', label: 'Sınav Id'},
         { name: 'name', label: 'Sınav Adı' },
-        { name: 'isActive', label: 'Sınav Aktif Mi', type:'checkbox' },
+        { name: 'isActive', label: 'Sınav Aktif Mi'},
         { name: 'examUrl', label: 'Sınav Url' },
     ];
     const createExamValidationSchema = object({

@@ -1,4 +1,4 @@
-import { ErrorMessage, Field } from "formik";
+import { ErrorMessage, Field, FieldAttributes, FieldConfig } from "formik";
 import React, { useState } from "react";
 
 import { Col, Row, Toast } from "react-bootstrap";
@@ -9,6 +9,7 @@ type Props = {
 	type?: string;
 	placeHolder?: string;
 	value?: string;
+	disabled?:any;
 };
 
 const FormikInput = (props: Props) => {
@@ -17,13 +18,27 @@ const FormikInput = (props: Props) => {
 	return (
 		<div className="mb-3 ">
 			<label className="form-label">{props.label}</label>
-			<Field
+			{
+				props.disabled &&<Field
 				name={props.name}
 				type={props.type || "text"}
 				className="login-input"
 				placeholder={props.placeHolder}
-			
+				disabled
+				
 			/>
+			}
+			{
+				!props.disabled &&<Field
+				name={props.name}
+				type={props.type || "text"}
+				className="login-input"
+				placeholder={props.placeHolder}
+				
+			/>
+			}
+				
+			
 			
 			<ErrorMessage name={props.name}>
 				{message => <Row>

@@ -1,34 +1,25 @@
 import { Button, Modal } from 'react-bootstrap'
-
-import { SingleResponseModel, UpdateRequestModel } from '../../models/abstracts/ResponseAbstracts'
-import { useEffect, useState } from 'react'
+import FormikInput from '../FormikInput'
+import { Formik,Form } from 'formik'
+import { AnyObject, object, string } from 'yup'
+import { UpdateRequestModel } from '../../models/abstracts/ResponseAbstracts'
+import { UpdateInputTypes } from '../../utils/requirements/form/formRequirementsAbstract'
 
 
 type Props={
     onHide:any
     show:any
     modalHeader:string;
-    item:SingleResponseModel;
-    attributes:string[];
+    initialValues:UpdateRequestModel;
+    validationObject:AnyObject;
+    updateFunc:(data:UpdateRequestModel)=>void;
+    formikInputTypes:UpdateInputTypes[];
 }
 
 const ShowModal = (props:Props) => {
-  console.log(props.attributes);
-  
-    const [attributes,setAttributes]=useState<string[]>();
-    const [control,setAttributeControl]=useState<boolean>(false);
-    useEffect(() => {
-      setAttributes(props.attributes);
-      const timer = setTimeout(() => {
-        if (attributes!=null) {
-          setAttributeControl(true)
-        }
-        
-      }, 1000);
-      return () => clearTimeout(timer); 
-    }, [])
-    
-    
+    const initialValues:UpdateRequestModel = props.initialValues;
+    const validationSchema = props.validationObject;
+ 
 
 
   return (
@@ -46,11 +37,22 @@ const ShowModal = (props:Props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {control && attributes?.map((attribute)=>(
-            <div>{attribute} ={' '}
-                {props.item[attribute]}
-            </div>
-        ))} 
+        <Formik initialValues={initialValues}
+          onSubmit={(initialValues:UpdateRequestModel) => {
+            props.updateFunc(initialValues)
+          }}
+          validationSchema={validationSchema}
+        >
+            <Form>
+                {props.formikInputTypes.map((type)=>(
+                    <FormikInput
+                    name={type.name}
+                    label={type.label}
+                    disabled={true}
+                  />
+                ))}
+            </Form>
+        </Formik>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

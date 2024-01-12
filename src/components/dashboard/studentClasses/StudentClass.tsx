@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./StudentClass.css";
 import { Button, Col, Modal, Row, Toast } from 'react-bootstrap';
-import { FaPlus, FaTrash } from 'react-icons/fa';
+import { FaAddressBook, FaFileArchive, FaPlus, FaTrash } from 'react-icons/fa';
 import { Formik, Form, FormikHelpers, FormikValues, ErrorMessage, Field } from 'formik';
 import FormikInput from '../../FormikInput';
 import { object, string } from 'yup';
@@ -31,7 +31,10 @@ const StudentClass = (props: Props) => {
     const [addClassModalShow, setAddClassModalShow] = useState(false);
     const [studentClasses, setStudentClasses] = useState<GetListStudentClassResponse>();
     const [mainControl, setMainControl] = useState(false);
+    const [getAllControl, setGetAllControl] = useState(false);
     const [reloadFlag, setReloadFlag] = useState(false);
+    const [getAllDetailModalShow, setGetAllDetailModalShow] = useState(false);
+    const [classForShowClassModal, setClassForShowClassModal] = useState<StudentClassResponse>();
 
     //Öğrenciler
     const [addClassStudentModalShow, setAddClassStudentModalShow] = useState(false);
@@ -199,6 +202,8 @@ const StudentClass = (props: Props) => {
     useEffect(() => {
         studentClassService.getAll("0", "100").then((response) => {
             setStudentClasses(response.data);
+            console.log(response.data.items);
+
         }).then(() => {
             setMainControl(true)
 
@@ -221,7 +226,8 @@ const StudentClass = (props: Props) => {
 
             studentService.getAll('0', '100').then((response) => {
                 setStudents(response.data);
-                console.log(response);
+                console.log(response.data );
+                
             }).then(() => { setStudentControl(true) });
         });
     }, [reloadFlag])
@@ -246,7 +252,9 @@ const StudentClass = (props: Props) => {
                                     </a>
                                     <div className="postcard__text t-dark">
                                         <h1 className="postcard__title blue" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-                                            <a>{studentClass.name}</a>
+                                            <a>{studentClass.name} <FaFileArchive onClick={() => {
+                                                setClassForShowClassModal(studentClass); setGetAllDetailModalShow(true); setGetAllControl(true); 
+                                            }} style={{ fontSize: '32px', cursor: 'pointer' }} /></a>
                                             <a href={'#deleteStudentClass' + studentClass.id} className="delete" data-toggle="modal" style={{ color: 'red' }}><FaTrash /></a>
                                         </h1>
 
@@ -305,6 +313,122 @@ const StudentClass = (props: Props) => {
             </>
 
             }
+            {getAllControl &&
+                <Modal
+                    onHide={() => setGetAllDetailModalShow(false)}
+                    show={getAllDetailModalShow}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            {classForShowClassModal.name} Sınıf'ı Detayları
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Formik initialValues={createClassStudentInitialValues}
+                            onSubmit={async (values) => {
+                                console.log(values);
+                                handleClassStudentAddForm(values)
+                            }}
+                            validationSchema={createClassStudentValidationSchema}
+                        >
+                            <Form >
+
+                                <div className="mb-3 ">
+                                    <h3>Sınavlar</h3>
+                                    {
+                                        classForShowClassModal.exams.map((exam) => (
+                                            <>
+                                                {
+                                                    <div>{
+                                                        <div>
+                                                            {exam.name}
+                                                        </div>
+
+                                                    }
+                                                    </div>
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    <h3>Duyurular</h3>
+                                    {
+                                        classForShowClassModal.announcements.map((announcement) => (
+                                            <>
+                                                {
+                                                    <div>{
+                                                        <div>
+                                                            {announcement.name}
+                                                        </div>
+
+                                                    }
+                                                    </div>
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    <h3>Dersler</h3>
+                                    {
+                                        classForShowClassModal.lectures.map((lecture) => (
+                                            <>
+                                                {
+                                                    <div>{
+                                                        <div>
+                                                            {lecture.name}
+                                                        </div>
+
+                                                    }
+                                                    </div>
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    <h3>Anketler</h3>
+                                    {
+                                        classForShowClassModal.surveys.map((survey) => (
+                                            <>
+                                                {
+                                                    <div>{
+                                                        <div>
+                                                            {survey.name}
+                                                        </div>
+
+                                                    }
+                                                    </div>
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    <h3>Öğrenciler</h3>
+                                    {
+                                        classForShowClassModal.students.map((student) => (
+                                            <>
+                                                    {console.log(student)}
+                                                { 
+                                                
+                                                    <div>{
+                                                        <div>
+                                                            Adı:{student.userFirstName} Soyadı:{student.userLastName} Email:{student.userEmail}
+                                                        </div>
+
+                                                    }
+                                                    </div>
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                </div>
+                            </Form>
+                        </Formik>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={() => setGetAllDetailModalShow(false)}>Close</Button>
+                    </Modal.Footer>
+
+
+                </Modal>}
             {classForClassStudentModal &&
                 <Modal
                     onHide={() => setAddClassStudentModalShow(false)}
@@ -349,7 +473,7 @@ const StudentClass = (props: Props) => {
                                 </div>
                                 <div className="mb-3 ">
                                     <label className="form-label">Öğrenciler &nbsp;</label>
-                                    <Field name={'studentId'} as='select'  className='form-control'>
+                                    <Field name={'studentId'} as='select' className='form-control'>
                                         <option value="">Lütfen Bir Öğrenci Seçiniz</option>
                                         {
                                             students.items.map((student) => (
