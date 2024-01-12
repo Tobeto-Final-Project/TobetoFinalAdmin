@@ -12,7 +12,7 @@ class ClassStudentService
  
         constructor() {
 
-           super("ClassStudents");
+           super("StudentClassStudents");
 
         }
     }

@@ -9,6 +9,9 @@ import { StudentClassResponse } from "../studentClasses/StudentClassResponses";
 
  export interface StudentResponse extends SingleResponseModel{
     id:GUID| string;
+    userLastName: string;
+    userFirstName: string;
+    userEmail: string;
     cityName: string;
     districtName: string;
     nationalIdentity: string;

@@ -9,43 +9,43 @@ export interface UpdateStudentClassRequest extends UpdateRequestModel{
 }
 
 export interface CreateClassExamRequest extends CreateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     examId:GUID|string;
 }
 
 export interface UpdateClassExamRequest extends UpdateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     examId:GUID|string;
 }
 
 export interface CreateClassStudentRequest extends CreateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     studentId:GUID|string;
 }
 export interface UpdateClassStudentRequest extends UpdateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     studentId:GUID|string;
 }
 
 export interface CreateClassAnnouncementRequest extends CreateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     announcementId:GUID|string;
 }
 export interface UpdateClassAnnouncementRequest extends UpdateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     announcementId:GUID|string;
 }export interface CreateClassSurveyRequest extends CreateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     surveyId:GUID|string;
 }
 export interface UpdateClassSurveyRequest extends UpdateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     surveyId:GUID|string;
 }export interface CreateClassLectureRequest extends CreateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     lectureId:GUID|string;
 }
 export interface UpdateClassLectureRequest extends UpdateRequestModel{
-    classId:GUID|string;
+    studentClassId:GUID|string;
     lectureId:GUID|string;
 }
