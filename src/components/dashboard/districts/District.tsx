@@ -8,10 +8,12 @@ import { GetListCityResponse, CityResponse } from '../../../models/responses/das
 import { GetListDistrictResponse, DistrictResponse } from '../../../models/responses/dashboard/districts/DistrictResponses';
 import CityService from '../../../services/dashboard/cities/CityService';
 import DistrictService from '../../../services/dashboard/districts/DistrictService';
+import ExceptionService from '../../../services/ExceptionService';
 
 type Props = {}
 
 const District = (props: Props) => {
+    let exceptionService:ExceptionService=new ExceptionService();
 
     const [addSelectedCity, setAddSelectedCity] = useState<any>();
     const [adddistrictName, setAddDistrictName] = useState('');
@@ -39,7 +41,10 @@ const District = (props: Props) => {
             name: adddistrictName
         };
 
-        service.create(district).then((res) => setReloadFlag((prev) => !prev));
+        service.create(district).then((res) => setReloadFlag((prev) => !prev)).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        });
     };
 
     const handleFormUpdate = (e,updateId:any) => {
@@ -52,12 +57,18 @@ const District = (props: Props) => {
         cityId:updateSelectedCity
     }
        
-        service.update(updateDistrict).then((res) => setReloadFlag((prev) => !prev));
+        service.update(updateDistrict).then((res) => setReloadFlag((prev) => !prev)).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        });
     };
 
     const handleDelete = (e, id: GUID) => {
         e.preventDefault();
-        service.delete(id).then(() => setReloadFlag((prev) => !prev))
+        service.delete(id).then(() => setReloadFlag((prev) => !prev)).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        })
     }
 
     useEffect(() => {
@@ -211,12 +222,12 @@ const District = (props: Props) => {
                     <div className="modal-content">
                         <form onSubmit={handleFormAdd}>
                             <div className="modal-header">
-                                <h4 className="modal-title">Şehir Düzeyi Ekle</h4>
+                                <h4 className="modal-title">İlçe Ekle</h4>
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
                             <div className="modal-body">
                                 <div className="form-group">
-                                    <label>Şehir Düzey Adı</label>
+                                    <label>İlçe  Adı</label>
                                     <input type="text" className="form-control" required onChange={(e) => setAddDistrictName(e.target.value)} />
                                 </div>
                                 <div className="form-group">

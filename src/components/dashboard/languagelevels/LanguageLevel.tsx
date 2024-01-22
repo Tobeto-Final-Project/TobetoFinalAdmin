@@ -8,10 +8,12 @@ import { GetListLanguageResponse, LanguageResponse } from '../../../models/respo
 import LanguageService from '../../../services/dashboard/languages/LanguageService';
 import { GUID } from '../../../services/BaseService';
 import { Field } from 'formik';
+import ExceptionService from '../../../services/ExceptionService';
 
 type Props = {}
 
 const LanguageLevel = (props: Props) => {
+    let exceptionService:ExceptionService=new ExceptionService();
 
     const [addSelectedLanguage, setAddSelectedLanguage] = useState<any>();
     const [addlanguageLevelName, setAddLanguageLevelName] = useState('');
@@ -39,7 +41,10 @@ const LanguageLevel = (props: Props) => {
             name: addlanguageLevelName
         };
 
-        service.create(languageLevel).then((res) => setReloadFlag((prev) => !prev));
+        service.create(languageLevel).then((res) => setReloadFlag((prev) => !prev)).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        });
     };
 
     const handleFormLanguageLevelUpdate = (e,updateId:any) => {
@@ -52,12 +57,18 @@ const LanguageLevel = (props: Props) => {
         languageId:updateSelectedLanguage
     }
        
-        service.update(updateLanguageLevel).then((res) => setReloadFlag((prev) => !prev));
+        service.update(updateLanguageLevel).then((res) => setReloadFlag((prev) => !prev)).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        });
     };
 
     const handleLanguageLevelDelete = (e, id: GUID) => {
         e.preventDefault();
-        service.delete(id).then(() => setReloadFlag((prev) => !prev))
+        service.delete(id).then(() => setReloadFlag((prev) => !prev)).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        })
     }
 
     useEffect(() => {
@@ -70,7 +81,10 @@ const LanguageLevel = (props: Props) => {
                     setLanguages(response.data);
                 })
                     .then(() => setLanguageControl(true))
-            );
+            ).catch((err:any)=>{
+                console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+                
+            });
 
 
 

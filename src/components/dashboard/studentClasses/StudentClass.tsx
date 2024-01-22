@@ -58,6 +58,8 @@ const StudentClass = (props: Props) => {
             setReloadFlag((prev) => !prev);
         }).then((r) => {
             console.log(r);
+        }).catch((err)=>{
+            alert(err);
         })
     }
 
@@ -87,6 +89,8 @@ const StudentClass = (props: Props) => {
             setReloadFlag((prev) => !prev);
         }).then((r) => {
             console.log(r);
+        }).catch((err)=>{
+            alert(err);
         })
     }
     //sınavlar
@@ -115,6 +119,8 @@ const StudentClass = (props: Props) => {
             setReloadFlag((prev) => !prev);
         }).then((r) => {
             console.log(r);
+        }).catch((err)=>{
+            alert(err);
         })
     }//
     //anketler
@@ -143,6 +149,8 @@ const StudentClass = (props: Props) => {
             setReloadFlag((prev) => !prev);
         }).then((r) => {
             console.log(r);
+        }).catch((err)=>{
+            alert(err);
         })
     }//
 
@@ -172,6 +180,8 @@ const StudentClass = (props: Props) => {
             setReloadFlag((prev) => !prev);
         }).then((r) => {
             console.log(r);
+        }).catch((err)=>{
+            alert(err);
         });
     }
     //
@@ -190,12 +200,16 @@ const StudentClass = (props: Props) => {
         studentClassService.create(initialValues).then(() => {
             setAddClassModalShow(false);
             setReloadFlag((prev) => !prev);
+        }).catch((err)=>{
+            alert(err);
         });
     }
     const handleStudentClassDelete = (e, id: GUID | string) => {
         e.preventDefault();
         studentClassService.delete(id).then(() => {
             setReloadFlag((prev) => !prev);
+        }).catch((err)=>{
+            alert(err);
         })
     }
 
@@ -210,25 +224,35 @@ const StudentClass = (props: Props) => {
         }).then(() => {
             surveyService.getAll('0', '100').then((response) => {
                 setSurveys(response.data);
-            }).then(() => { setSurveyControl(true) });
+            }).then(() => { setSurveyControl(true) }).catch((err)=>{
+                alert(err);
+            });
 
             announcementService.getAll('0', '100').then((response) => {
                 setAnnouncements(response.data);
-            }).then(() => { setAnnouncementControl(true) });
+            }).then(() => { setAnnouncementControl(true) }).catch((err)=>{
+                alert(err);
+            });
 
             examService.getAll('0', '100').then((response) => {
                 setExams(response.data);
-            }).then(() => { setExamControl(true) });
+            }).then(() => { setExamControl(true) }).catch((err)=>{
+                alert(err);
+            });
 
             lectureService.getAll('0', '100').then((response) => {
                 setLectures(response.data);
-            }).then(() => { setLectureControl(true) });
+            }).then(() => { setLectureControl(true) }).catch((err)=>{
+                alert(err);
+            });
 
             studentService.getAll('0', '100').then((response) => {
                 setStudents(response.data);
                 console.log(response.data );
                 
-            }).then(() => { setStudentControl(true) });
+            }).then(() => { setStudentControl(true) }).catch((err)=>{
+                alert(err);
+            });
         });
     }, [reloadFlag])
 
@@ -410,7 +434,7 @@ const StudentClass = (props: Props) => {
                                                 
                                                     <div>{
                                                         <div>
-                                                            Adı:{student.userFirstName} Soyadı:{student.userLastName} Email:{student.userEmail}
+                                                            Adı:{student.firstName} Soyadı:{student.lastName} Email:{student.email}
                                                         </div>
 
                                                     }
@@ -477,7 +501,7 @@ const StudentClass = (props: Props) => {
                                         <option value="">Lütfen Bir Öğrenci Seçiniz</option>
                                         {
                                             students.items.map((student) => (
-                                                <option value={student.id}>{student.userFirstName} {student.userLastName}  {student.userEmail}</option>
+                                                <option value={student.id}>{student.firstName} {student.lastName}  {student.email}</option>
                                             ))
                                         }
 

@@ -4,8 +4,9 @@ import { Button, Col, Row, Toast } from 'react-bootstrap'
 import { FaPlus } from "react-icons/fa";
 import AddModal from '../../components/modals/addModal';
 import { BaseAdminComponentRequirements, CreateInputTypes, UpdateInitialValues, UpdateInputTypes } from '../../utils/requirements/form/formRequirementsAbstract';
-import { CreateRequestModel, GetAllModel, SingleResponseModel, UpdateRequestModel } from '../../models/abstracts/ResponseAbstracts';
+import { CreateRequestModel, CreatedResponseModel, GetAllModel, SingleResponseModel, UpdateRequestModel } from '../../models/abstracts/ResponseAbstracts';
 import { GUID } from '../../services/BaseService';
+import ExceptionService from '../../services/ExceptionService';
 
 
 
@@ -21,12 +22,16 @@ const BaseAdminComponent = (props: Props) => {
     const [mainControl, setMainControl] = useState(false);
     const [reloadFlag, setReloadFlag] = useState(false);
 
+    let exceptionService:ExceptionService=new ExceptionService();
     const create = (initialValues: CreateRequestModel) => {
         props.requirement.service.create(initialValues).then((response) => {
             setShow(true);
             setModalShow(false);
             setToastMessage("Eklendi");
             setReloadFlag((prev) => !prev);
+        }).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
         })
     }
     const update = (initialValues: UpdateInitialValues) => {
@@ -34,23 +39,32 @@ const BaseAdminComponent = (props: Props) => {
             setShow(true);
             setModalShow(false);
             setReloadFlag((prev) => !prev);
-        }).then(() => setToastMessage("Güncellendi"));
+        }).then(() => setToastMessage("Güncellendi")).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        });
     }
 
     const deleteAny = (id: GUID | number | string) => {
         props.requirement.service.delete(id).then(
 
-        ).then(() => { setToastMessage("Silindi"); setReloadFlag((prev) => !prev); })
+        ).then(() => { setToastMessage("Silindi"); setReloadFlag((prev) => !prev); }).catch((err:any)=>{
+            console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+            
+        })
     }
 
 
     useEffect(() => {
-        props.requirement.service.getAll("0", "10")
+        props.requirement.service.getAll("0", "100")
             .then((response) => {
                 setObjects(response.data);
             })
             .then(() => {
                 setMainControl(true)
+            }).catch((err:any)=>{
+                console.log(exceptionService.showExceptionMessage(JSON.stringify(err.response.data)));
+                
             });
 
     }, [reloadFlag])

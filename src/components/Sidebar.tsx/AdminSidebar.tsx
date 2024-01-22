@@ -7,12 +7,13 @@ import { useEffect, useState } from 'react';
 
 type Props = {}
 const menuItems=[
+  // {
+  //    name:'Öğrenciler',
+  //    key:'first',
+  //    to:'/ogrenciler',
+  //    icon:<FaUserFriends/>
+  // }, 
   {
-     name:'Öğrenciler',
-     key:'first',
-     to:'/ogrenciler',
-     icon:<FaUserFriends/>
-  }, {
     name:'Duyurular',
     key:'second',
     to:'/duyurular',

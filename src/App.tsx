@@ -337,7 +337,7 @@ function App(): ReactElement {
             </div>
           }
         />
-        <Route
+        {/* <Route
           path="/ogrenciler"
           element={
             <div className="container align-items-center">
@@ -351,7 +351,7 @@ function App(): ReactElement {
               </div>
             </div>
           }
-        />
+        /> */}
         <Route
           path="/siniflar"
           element={
