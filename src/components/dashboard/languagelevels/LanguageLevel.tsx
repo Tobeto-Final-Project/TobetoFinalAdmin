@@ -209,7 +209,7 @@ const LanguageLevel = (props: Props) => {
 
                                     </>
 
-                                )).reverse()}
+                                ))}
 
 
 

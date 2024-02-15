@@ -23,7 +23,9 @@ class AuthLoginService {
 			localStorage.setItem("token",token);
 			const dispatch = useDispatch();
 			dispatch({ type: 'SET_TOKEN', payload: localStorage.getItem("token") });
-			console.log(token);
+			console.log(response);
+			console.log(response.data);
+			
 		}	
 	  }).catch((err)=>console.log(err)
 	  );

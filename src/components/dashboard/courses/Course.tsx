@@ -228,7 +228,7 @@ const Course = (props: Props) => {
 
                                     </>
 
-                                )).reverse()}
+                                ))}
 
 
 

@@ -206,7 +206,7 @@ const District = (props: Props) => {
 
                                     </>
 
-                                )).reverse()}
+                                ))}
 
 
 

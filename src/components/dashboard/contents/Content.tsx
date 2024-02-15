@@ -420,7 +420,7 @@ const Content = (props: Props) => {
 
                                     </>
 
-                                )).reverse()}
+                                ))}
 
 
 

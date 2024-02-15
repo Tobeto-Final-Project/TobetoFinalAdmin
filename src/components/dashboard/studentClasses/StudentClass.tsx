@@ -122,7 +122,9 @@ const StudentClass = (props: Props) => {
         }).catch((err)=>{
             alert(err);
         })
-    }//
+    }
+    
+    //
     //anketler
     const [addClassSurveyModalShow, setAddClassSurveyModalShow] = useState(false);
     const [classForClassSurveyModal, setClassForClassSurveyModal] = useState<StudentClassResponse>();
@@ -247,9 +249,7 @@ const StudentClass = (props: Props) => {
             });
 
             studentService.getAll('0', '100').then((response) => {
-                setStudents(response.data);
-                console.log(response.data );
-                
+                setStudents(response.data); 
             }).then(() => { setStudentControl(true) }).catch((err)=>{
                 alert(err);
             });
@@ -327,7 +327,7 @@ const StudentClass = (props: Props) => {
 
                             </>
 
-                        )).reverse()
+                        ))
                     }
 
 

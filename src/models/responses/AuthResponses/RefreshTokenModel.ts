@@ -1,6 +1,6 @@
 export interface RefreshTokenModel{
     UserId:number;
-    Token:string;
+    token:string;
     Expires:Date;
     CreatedByIp:string;
     Revoked?:Date;

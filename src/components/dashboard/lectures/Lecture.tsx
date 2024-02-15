@@ -259,7 +259,7 @@ import LectureCourseService from '../../../services/dashboard/lectures/LectureCo
 
                                     </>
 
-                                )).reverse()}
+                                ))}
 
 
 
