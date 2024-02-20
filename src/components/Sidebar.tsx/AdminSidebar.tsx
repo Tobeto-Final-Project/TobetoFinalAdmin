@@ -24,6 +24,25 @@ const menuItems=[
   key:'third',
   to:'/siniflar',
   icon:<FaUniversity/>
+},
+{
+  name:'Dersler',
+  key:'d',
+  to:'/dersler',
+  icon:<FaFilePrescription/>
+},
+,{
+  name:'Kurslar',
+  key:'c',
+  to:'/kurslar',
+  icon:<FaDiscourse/>
+},
+
+{
+  name:'İçerikler',
+  key:'a',
+  to:'/icerikler',
+  icon:<FaFileVideo/>
 },{
   name:'Genel Kategoriler',
   key:'fourth',
@@ -42,27 +61,12 @@ const menuItems=[
   icon:<FaMountain/>
 },
 {
-  name:'İçerikler',
-  key:'a',
-  to:'/icerikler',
-  icon:<FaFileVideo/>
-},{
   name:'Etiketler',
   key:'b',
   to:'/etiketler',
   icon:<FaTag/>
-},{
-  name:'Kurslar',
-  key:'c',
-  to:'/kurslar',
-  icon:<FaDiscourse/>
 },
 {
-  name:'Dersler',
-  key:'d',
-  to:'/dersler',
-  icon:<FaFilePrescription/>
-},{
   name:'Sınavlar',
   key:'f',
   to:'/sinavlar',

@@ -19,7 +19,8 @@ export class BaseService<
 
   constructor(apiType: string) {
 
-    this.api_url = "https://tobeto.azurewebsites.net/api/";
+    // this.api_url = "https://tobeto.azurewebsites.net/api/";
+    this.api_url = "http://localhost:60805/api/";
     this.api_type = apiType;
 
   }
