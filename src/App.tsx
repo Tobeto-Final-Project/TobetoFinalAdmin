@@ -27,6 +27,9 @@ import AdminSidebar from './components/Sidebar.tsx/AdminSidebar';
 import Student from './pages/dashboard/Student';
 import StudentClass from './components/dashboard/studentClasses/StudentClass';
 import ProfilePage from './pages/ProfilePage';
+import Pool from './pages/dashboard/Pool';
+import Quiz from './components/dashboard/questions/Question';
+import Question from './components/dashboard/questions/Question';
 
 
 function App(): ReactElement {
@@ -56,6 +59,21 @@ function App(): ReactElement {
     }
   />
 
+<Route
+    path="/havuzlar"
+    element={
+      <div className="container align-items-center">
+        <div className="row">
+          <div className="col-12">
+            <AdminSidebar />
+          </div>
+          <div className="col-12">
+            <Pool />
+          </div>
+        </div>
+      </div>
+    }
+  />
   <Route
     path="/yapimciFirmalar"
     element={
@@ -261,6 +279,21 @@ function App(): ReactElement {
           </div>
           <div className="col-12">
             <LanguageLevel />
+          </div>
+        </div>
+      </div>
+    }
+  />
+  <Route
+    path="/sorular"
+    element={
+      <div className="container align-items-center">
+        <div className="row">
+          <div className="col-12">
+            <AdminSidebar />
+          </div>
+          <div className="col-12">
+            <Question />
           </div>
         </div>
       </div>

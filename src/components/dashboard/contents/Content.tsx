@@ -179,10 +179,10 @@ const Content = (props: Props) => {
                                     <th>Dili</th>
                                     <th>Açıklaması</th>
                                     <th>Alt Tür</th>
-                                    <th>Url</th>
-                                    <th>Süre</th>
+                                    {/* <th>Url</th> */}
+                                    {/* <th>Süre</th> */}
                                     <th>İçerik Kategori</th>
-                                    <th>Yapımcı Firma</th>
+                                    {/* <th>Yapımcı Firma</th> */}
                                     <th>Operasyonlar</th>
                                     <th>Bişiler Ekle</th>
                                 </tr>
@@ -197,10 +197,10 @@ const Content = (props: Props) => {
                                             <td>{content.languageName}</td>
                                             <td>{content.description}</td>
                                             <td>{content.subTypeName}</td>
-                                            <td>{content.videoUrl}</td>
-                                            <td>{content.duration}</td>
+                                            {/* <td>{content.videoUrl}</td> */}
+                                            {/* <td>{content.duration}</td> */}
                                             <td>{content.contentCategoryName}</td>
-                                            <td>{content.manufacturerName}</td>
+                                            {/* <td>{content.manufacturerName}</td> */}
 
 
                                             <td>
