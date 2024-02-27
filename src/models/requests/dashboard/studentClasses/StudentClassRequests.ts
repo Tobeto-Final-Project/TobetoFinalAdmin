@@ -17,7 +17,15 @@ export interface UpdateClassExamRequest extends UpdateRequestModel{
     studentClassId:GUID|string;
     examId:GUID|string;
 }
+export interface CreateClassQuizRequest extends CreateRequestModel{
+    studentClassId:GUID|string;
+    quizId:number;
+}
 
+export interface UpdateClassQuizRequest extends UpdateRequestModel{
+    studentClassId:GUID|string;
+    quizId:number;
+}
 export interface CreateClassStudentRequest extends CreateRequestModel{
     studentClassId:GUID|string;
     studentId:GUID|string;

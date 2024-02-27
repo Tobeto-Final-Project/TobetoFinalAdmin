@@ -5,7 +5,7 @@ import { FaAddressBook, FaFileArchive, FaPlus, FaTrash } from 'react-icons/fa';
 import { Formik, Form, FormikHelpers, FormikValues, ErrorMessage, Field } from 'formik';
 import FormikInput from '../../FormikInput';
 import { object, string } from 'yup';
-import { CreateClassAnnouncementRequest, CreateClassExamRequest, CreateClassLectureRequest, CreateClassStudentRequest, CreateClassSurveyRequest, CreateStudentClassRequest } from '../../../models/requests/dashboard/studentClasses/StudentClassRequests';
+import { CreateClassAnnouncementRequest, CreateClassExamRequest, CreateClassLectureRequest, CreateClassQuizRequest, CreateClassStudentRequest, CreateClassSurveyRequest, CreateStudentClassRequest } from '../../../models/requests/dashboard/studentClasses/StudentClassRequests';
 import { CreateInputTypes } from '../../../utils/requirements/form/formRequirementsAbstract';
 import StudentClassService from '../../../services/dashboard/studentClasses/StudentClassService';
 import { GetListStudentClassResponse, StudentClassResponse } from '../../../models/responses/dashboard/studentClasses/StudentClassResponses';
@@ -25,6 +25,9 @@ import LectureService from '../../../services/dashboard/lectures/LectureService'
 import { GetListStudentResponse } from '../../../models/responses/dashboard/students/StudentResponses';
 import ClassStudentService from '../../../services/dashboard/classStudents/ClassStudentService';
 import StudentService from '../../../services/dashboard/students/StudentService';
+import QuizService from '../../../services/dashboard/quizs/QuizService';
+import ClassQuizService from '../../../services/dashboard/classQuizs/ClassQuizService';
+import { GetListQuizResponse } from '../../../models/responses/dashboard/quizs/QuizResponses';
 type Props = {}
 
 const StudentClass = (props: Props) => {
@@ -93,36 +96,7 @@ const StudentClass = (props: Props) => {
             alert(err);
         })
     }
-    //sınavlar
-    const [addClassExamModalShow, setAddClassExamModalShow] = useState(false);
-    const [classForClassExamModal, setClassForClassExamModal] = useState<StudentClassResponse>();
-    const [exams, setExams] = useState<GetListExamResponse>();
-    const [examControl, setExamControl] = useState(false);
-    const createClassExamInitialValues: CreateClassExamRequest = {
-        studentClassId: '',
-        examId: '',
-    }
-    const createClassExamValidationSchema = object({
-        examId: string().required('Exam Id Alanı Zorunludur*')
-
-    });
-    const createClassExamInputTypes: CreateInputTypes[] = [
-        { name: 'classId', label: 'Sınıf Id' },
-        { name: 'examId', label: 'Anketler' }
-    ];
-    let examService: ExamService = new ExamService();
-    let classExamService: ClassExamService = new ClassExamService();
-    const handleClassExamAddForm = (initialValues: CreateClassExamRequest) => {
-
-        classExamService.create({ studentClassId: classForClassExamModal.id, examId: initialValues.examId }).then(() => {
-            setAddClassExamModalShow(false);
-            setReloadFlag((prev) => !prev);
-        }).then((r) => {
-            console.log(r);
-        }).catch((err)=>{
-            alert(err);
-        })
-    }
+   
     
     //
     //anketler
@@ -214,6 +188,38 @@ const StudentClass = (props: Props) => {
             alert(err);
         })
     }
+     //sınavlar
+     const [addClassExamModalShow, setAddClassExamModalShow] = useState(false);
+     const [classForClassExamModal, setClassForClassExamModal] = useState<StudentClassResponse>();
+     const [exams, setExams] = useState<GetListQuizResponse>();
+     const [examControl, setExamControl] = useState(false);
+     const createClassExamInitialValues: CreateClassQuizRequest = {
+         studentClassId: '',
+         quizId: 0,
+     }
+     const createClassExamValidationSchema = object({
+         quizId: string().required('Quiz Id Alanı Zorunludur*')
+ 
+     });
+     const createClassExamInputTypes: CreateInputTypes[] = [
+         { name: 'studentClassId', label: 'Sınıf Id' },
+         { name: 'quizId', label: 'Anketler' }
+     ];
+     let examService: QuizService = new QuizService();
+     let classExamService: ClassQuizService = new ClassQuizService();
+     const handleClassExamAddForm = (initialValues: CreateClassQuizRequest) => {
+ 
+         classExamService.create({ studentClassId: classForClassExamModal.id, quizId: initialValues.quizId }).then(() => {
+             setAddClassExamModalShow(false);
+             setReloadFlag((prev) => !prev);
+         }).then((r) => {
+             console.log(r);
+         }).catch((err)=>{
+            console.log(err);
+            
+             alert(err);
+         })
+     }
 
     useEffect(() => {
         studentClassService.getAll("0", "100").then((response) => {
@@ -635,13 +641,13 @@ const StudentClass = (props: Props) => {
                                 <div className="mb-3 ">
                                     <label className="form-label">Sınıf Id &nbsp;</label>
                                     <Field
-                                        name={'classId'}
+                                        name={'studentClassId'}
                                         type={'text'}
                                         className="login-input"
                                         value={classForClassExamModal.id}
                                         disabled
                                     />
-                                    <ErrorMessage name={"classId"}>
+                                    <ErrorMessage name={"studentClassId"}>
                                         {message => <Row>
                                             <Col xs={12}>
                                                 <Toast show={true} delay={3000} autohide>
@@ -654,11 +660,11 @@ const StudentClass = (props: Props) => {
                                 </div>
                                 <div className="mb-3 ">
                                     <label className="form-label">Sınavlar &nbsp;</label>
-                                    <Field name={'examId'} as='select' defaulValue='' className='form-control'>
+                                    <Field name={'quizId'} as='select' defaultValue='' className='form-control'>
                                         <option value="">Lütfen Bir Sınav Seçiniz</option>
                                         {
-                                            exams.items.map((exam) => (
-                                                <option value={exam.id}>{exam.name}</option>
+                                            exams.items.map((quiz) => (
+                                                <option value={quiz.id}>{quiz.name}</option>
                                             ))
                                         }
 

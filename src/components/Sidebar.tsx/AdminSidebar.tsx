@@ -2,11 +2,17 @@ import './style.css'
 import 'react-bootstrap-sidebar-menu/dist/index'
 import { Link } from 'react-router-dom';
 import './style.css'
-import { FaBuilding, FaChalkboardTeacher, FaDiscourse, FaFilePrescription, FaFileVideo, FaFillDrip, FaFontAwesome, FaHandshakeSlash, FaHashtag, FaLanguage, FaLayerGroup, FaMegaport, FaMountain, FaQuestion, FaScroll, FaSpeakap, FaSquareFull, FaSwimmingPool, FaTag, FaTeamspeak, FaUber, FaUniversity, FaUserAlt, FaUserFriends, FaUsps, FaVideo } from 'react-icons/fa';
+import { FaBook, FaBuilding, FaChalkboardTeacher, FaDiscourse, FaFilePrescription, FaFileVideo, FaFillDrip,FaHashtag, FaLanguage, FaLayerGroup, FaMegaport, FaMountain, FaQuestion, FaScroll, FaSpeakap, FaSquareFull, FaSwimmingPool, FaTag, FaTeamspeak, FaUber, FaUniversity, FaUserAlt, FaUserFriends, FaUsps, FaVideo } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
 type Props = {}
 const menuItems=[
+  {
+    name:'Quizler',
+    key:'n',
+    to:'/quizler',
+    icon:<FaBook/>
+  },
   {
     name:'Sorular',
     key:'n',

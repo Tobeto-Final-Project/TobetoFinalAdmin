@@ -23,6 +23,11 @@ export interface ClassExamResponse extends SingleResponseModel{}
 export interface GetListClassExamResponse extends GetAllModel<ClassExamResponse>{}
 export interface CreatedClassExamResponse extends CreatedResponseModel{}
 export interface UpdatedClassExamResponse extends UpdatedResponseModel{}
+//Class Quizs
+export interface ClassQuizResponse extends SingleResponseModel{}
+export interface GetListClassQuizResponse extends GetAllModel<ClassQuizResponse>{}
+export interface CreatedClassQuizResponse extends CreatedResponseModel{}
+export interface UpdatedClassQuizResponse extends UpdatedResponseModel{}
 //Class Students
 export interface ClassStudentResponse extends SingleResponseModel{}
 export interface GetListClassStudentResponse extends GetAllModel<ClassStudentResponse>{}

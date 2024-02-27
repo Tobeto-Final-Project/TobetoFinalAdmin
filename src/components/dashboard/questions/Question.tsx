@@ -9,6 +9,7 @@ import CityService from '../../../services/dashboard/cities/CityService';
 import QuestionService from '../../../services/dashboard/questions/QuestionService';
 import PoolService from '../../../services/dashboard/pools/PoolService';
 import { PoolResponse } from '../../../models/responses/dashboard/pools/PoolsResponses';
+import { toast } from 'react-toastify';
 
 type Props = {}
 
@@ -53,7 +54,9 @@ const Question = (props: Props) => {
         };
 
         service.create(Question).then((res) => setReloadFlag((prev) => !prev)).catch((err:any)=>{
-            console.log(err.response.data);
+            alert(err.response.data.detail)           
+            console.log(err);
+            
             
         });
     };
@@ -210,7 +213,7 @@ const Question = (props: Props) => {
 
                                     </>
 
-                                ))}
+                                )).reverse( )}
 
 
 
@@ -226,7 +229,7 @@ const Question = (props: Props) => {
                     <div className="modal-content">
                         <form onSubmit={handleFormAdd}>
                             <div className="modal-header">
-                                <h4 className="modal-title">İlçe Ekle</h4>
+                                <h4 className="modal-title">Soru Ekle</h4>
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
                             <div className="modal-body">
@@ -245,7 +248,15 @@ const Question = (props: Props) => {
                                 </div>
                                 <div className="form-group">
                                     <label>Eklediğiniz Seçenekler (Doğru Seçeneğini Seçiniz)</label><br />
-                                   {createdOptions?.map((x)=>(<><input type="checkbox" name="" onClick={()=>setCorrectOptionId(x.id)} id="" />{x.text}<br /></>))}
+                                   
+                                    {createdOptions?.map((x)=>(<>
+                                        <label htmlFor={"option" + x.id}>{x.text}</label>
+                                       <input type="radio" id={"option" + x.id} name="options" value={x.id} onClick={()=>setCorrectOptionId(x.id)}/>
+                                        |
+                                   
+                                    
+                                    </>))}
+                                   {/* {createdOptions?.map((x)=>(<><input type="checkbox" name="" onClick={()=>setCorrectOptionId(x.id)} id="" />{x.text}<br /></>))} */}
                                 </div> 
                             </div>
                             <div className="modal-footer">

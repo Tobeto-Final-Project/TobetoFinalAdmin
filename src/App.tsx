@@ -28,8 +28,9 @@ import Student from './pages/dashboard/Student';
 import StudentClass from './components/dashboard/studentClasses/StudentClass';
 import ProfilePage from './pages/ProfilePage';
 import Pool from './pages/dashboard/Pool';
-import Quiz from './components/dashboard/questions/Question';
+import Quiz from './components/dashboard/quizs/Quiz';
 import Question from './components/dashboard/questions/Question';
+import { ToastContainer } from 'react-toastify';
 
 
 function App(): ReactElement {
@@ -58,7 +59,21 @@ function App(): ReactElement {
       </div>
     }
   />
-
+ <Route
+    path="/quizler"
+    element={
+      <div className="container align-items-center">
+        <div className="row">
+          <div className="col-12">
+            <AdminSidebar />
+          </div>
+          <div className="col-12">
+            <Quiz />
+          </div>
+        </div>
+      </div>
+    }
+  />
 <Route
     path="/havuzlar"
     element={
@@ -404,13 +419,12 @@ function App(): ReactElement {
       </div>
     }
   />
+  
 
 
 </Routes>
 
 </BrowserRouter>
-
-
       
     </>
   );
